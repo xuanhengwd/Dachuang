@@ -36,8 +36,7 @@ def userregist(request):
         same_email = models.User.objects.filter(user_mail__contains=email)
         if same_name or same_email:
             data = {"error_code": 0, 'msg': '用户名或邮箱已经存在'}
-            meg = "用户名或邮箱已经存在"
-            return JsonResponse(data)
+            return JsonResponse(data, json_dumps_params={"ensure_ascii": False})
 
         newuser = models.User.objects.create()
         newuser.user_name = username
@@ -45,7 +44,7 @@ def userregist(request):
         newuser.user_mail = email
         newuser.save()
         data = {"error_code": 1, 'msg': '创建成功'}
-        meg = '创建成功'
-        return JsonResponse(data)
+
+        return JsonResponse(data, json_dumps_params={"ensure_ascii": False})
 
     return HttpResponse("none")
